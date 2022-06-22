@@ -15,20 +15,22 @@ public class CadastroDeProduto {
 	public static void main(String[] args) {
 		Categoria celulares = new Categoria("CELULARES");
 		
-		
-		Produto celular = new Produto("IPhone X", "Muito Legal", new BigDecimal("10000"), celulares);
-		
 		EntityManager em = JPAUtil.getEntityManager();
-		ProdutoDAO produtoDao = new ProdutoDAO(em);
-		CategoriaDAO categoriaDao = new CategoriaDAO(em);
-		
 		em.getTransaction().begin();
 		
-		categoriaDao.cadastrar(celulares);
-		produtoDao.cadastrar(celular);
+		em.persist(celulares);
+		celulares.setNome("XPTO");
 		
-		em.getTransaction().commit();
-		em.close();
+		em.flush();
+		em.clear();
+		
+		celulares = em.merge(celulares);
+		celulares.setNome("asdasdas");
+		em.flush();
+		em.clear();
+		em.remove(celulares);
+		em.flush();
+		
 		
 	}
 }
