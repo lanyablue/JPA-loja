@@ -1,6 +1,7 @@
 package br.com.loja.testes;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -13,25 +14,37 @@ import br.com.loja.util.JPAUtil;
 public class CadastroDeProduto {
 
 	public static void main(String[] args) {
-		Categoria celulares = new Categoria("CELULARES");
+		cadastrarProduto();
 		
 		EntityManager em = JPAUtil.getEntityManager();
+		ProdutoDAO produtoDao = new ProdutoDAO(em);
+		
+		Produto p = produtoDao.buscarProdutoPorId(1l);
+		System.out.println(p.getPreco());
+		
+		List<Produto> todos = produtoDao.buscarPorNomeDaCategoria("CELULARES");
+		todos.forEach(p2 -> System.out.println(p.getNome()));
+		
+		BigDecimal precoDoProduto = produtoDao.buscarPrecoDoProdutoComNome("IPhone X");
+		System.out.println("Preço do produto: " + precoDoProduto);
+		
+	}
+
+	private static void cadastrarProduto() {
+		Categoria celulares = new Categoria("CELULARES");
+		Produto celular = new Produto("IPhone X", "Muito Legal", new BigDecimal("10000"), celulares);
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		ProdutoDAO produtoDao = new ProdutoDAO(em);
+		CategoriaDAO categoriaDao = new CategoriaDAO(em);
+		
 		em.getTransaction().begin();
 		
-		em.persist(celulares);
-		celulares.setNome("XPTO");
+		categoriaDao.cadastrar(celulares);
+		produtoDao.cadastrar(celular);
 		
-		em.flush();
-		em.clear();
-		
-		celulares = em.merge(celulares);
-		celulares.setNome("asdasdas");
-		em.flush();
-		em.clear();
-		em.remove(celulares);
-		em.flush();
-		
-		
+		em.getTransaction().commit();
+		em.close();
 	}
 }
 
