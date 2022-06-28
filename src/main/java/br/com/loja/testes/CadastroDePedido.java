@@ -3,7 +3,7 @@ package br.com.loja.testes;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.EntityManager;
+import javax.persistence.EntityManager;import org.hibernate.internal.build.AllowSysOut;
 
 import br.com.loja.dao.CategoriaDAO;
 import br.com.loja.dao.ClienteDAO;
@@ -15,6 +15,7 @@ import br.com.loja.modelo.ItemPedido;
 import br.com.loja.modelo.Pedido;
 import br.com.loja.modelo.Produto;
 import br.com.loja.util.JPAUtil;
+import br.com.loja.vo.RelatorioDeVendasVo;
 
 public class CadastroDePedido {
 
@@ -50,12 +51,10 @@ public class CadastroDePedido {
 		System.out.println("VALOR TOTAL: " + totalVendido);
 		
 		
-		List<Object[]> relatorio = pedidoDao.relatorioDeVendas();
-		for (Object[] obj : relatorio) {
-			System.out.println(obj[0]);
-			System.out.println(obj[1]);
-			System.out.println(obj[2]);
-		}
+		List<RelatorioDeVendasVo> relatorio = pedidoDao.relatorioDeVendas();
+		relatorio.forEach(System.out::println);
+		
+		
 		
 	}
 
