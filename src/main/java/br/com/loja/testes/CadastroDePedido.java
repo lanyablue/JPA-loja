@@ -3,7 +3,7 @@ package br.com.loja.testes;
 import java.math.BigDecimal;
 import java.util.List;
 
-import javax.persistence.EntityManager;import org.hibernate.internal.build.AllowSysOut;
+import javax.persistence.EntityManager;
 
 import br.com.loja.dao.CategoriaDAO;
 import br.com.loja.dao.ClienteDAO;
